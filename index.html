@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DENSER: Depth-Enhanced Novel View Synthesis via Staged Ensemble Rendering</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script>
+    // Fix SageMaker proxy base path — ensures relative URLs resolve correctly
+    (function() {
+      var p = window.location.pathname;
+      var m = p.match(/^(\/proxy\/\d+)/);
+      if (m) {
+        var base = document.createElement('base');
+        base.href = m[1] + '/';
+        document.head.appendChild(base);
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="static/css/style.css" />
+</head>
+<body>
+
+<!-- ── Navbar ──────────────────────────────────────────────────────────────── -->
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" data-target="navMenu">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div id="navMenu" class="navbar-menu">
+    <div class="navbar-start" style="flex-grow:1;justify-content:center;">
+      <a class="navbar-item" href="#abstract">Abstract</a>
+      <a class="navbar-item" href="#results">Results</a>
+      <a class="navbar-item" href="#comparison">Comparison</a>
+      <a class="navbar-item" href="#metrics">Metrics</a>
+      <a class="navbar-item" href="#bibtex">BibTeX</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Title ───────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            DENSER: Depth-Guided Ensemble with Staged EFA-GS<br>Reconstruction for Soccer Novel View Synthesis
+          </h1>
+          <div class="is-size-5 publication-authors" style="margin-bottom:0.4rem;">
+            <span class="author-block">Parthsarthi Rawat</span>
+          </div>
+          <div class="is-size-6 has-text-grey" style="margin-bottom:1rem;">
+            GameChanger by Dick's Sporting Goods
+          </div>
+          <div style="margin-bottom:1.25rem; display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
+            <span style="display:inline-block; padding:5px 16px; border-radius:999px; background:#209cee; color:#fff; font-size:0.82rem; font-weight:600; letter-spacing:0.01em;">CVsports @ CVPR 2026</span>
+            <span style="display:inline-block; padding:5px 16px; border-radius:999px; background:#fff; color:#209cee; border:1.5px solid #209cee; font-size:0.78rem; font-weight:500;">12th Intl. Workshop on Computer Vision in Sports</span>
+            <span style="display:inline-block; padding:5px 16px; border-radius:999px; background:#ffe08a; color:#7a5800; font-size:0.82rem; font-weight:600;">SoccerNet Challenge &mdash; Novel View Synthesis</span>
+            <span style="display:inline-block; padding:5px 16px; border-radius:999px; background:#23d160; color:#fff; font-size:0.82rem; font-weight:700;">&#127942; Rank 1</span>
+          </div>
+          <div class="buttons is-centered">
+            <span class="button is-dark is-rounded" style="opacity:0.6;cursor:default;">
+              <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper (Coming Soon)</span>
+            </span>
+            <a href="#results" class="button is-dark is-rounded">
+              <span class="icon"><i class="fas fa-video"></i></span><span>Video Results</span>
+            </a>
+            <a href="#comparison" class="button is-dark is-rounded">
+              <span class="icon"><i class="fas fa-sliders-h"></i></span><span>Comparison</span>
+            </a>
+            <span class="button is-dark is-rounded" style="opacity:0.6;cursor:default;">
+              <span class="icon"><i class="fas fa-quote-left"></i></span><span>BibTeX (Coming Soon)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Teaser ──────────────────────────────────────────────────────────────── -->
+<section class="hero" style="background:#fafafa; border-top:1px solid #ededed; border-bottom:1px solid #ededed;">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <video autoplay muted loop playsinline style="border-radius:8px;border:1px solid #dbdbdb;width:100%;">
+        <source src="static/videos/all_scenes_spiral.mp4" type="video/mp4" />
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- ── Abstract ────────────────────────────────────────────────────────────── -->
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We propose <strong>DENSER</strong>, a Depth-guided ENSemble with Staged EFA-GS
+            Reconstruction for soccer novel view synthesis. DENSER extends EFA-GS with three
+            key contributions: (1) camera-height-based loss weighting that prioritises
+            ground-level broadcast views, (2) monocular depth supervision from
+            Depth-Anything-V2 to regularise geometry in textureless regions, and (3) a
+            three-model pixel-average ensemble whose members diverge from a shared base
+            checkpoint by varying training length and Gaussian scale clamping. On five
+            held-out challenge scenes we achieve a mean PSNR of <strong>29.89&thinsp;dB</strong>,
+            SSIM of <strong>0.791</strong>, and LPIPS of <strong>0.366</strong>.
+          </p>
+        </div>
+
+        <!-- Key numbers -->
+        <div class="columns is-centered" style="margin-top:2rem;">
+          <div class="column has-text-centered">
+            <p class="highlight-num">29.89</p>
+            <p class="is-size-6 has-text-grey">PSNR (dB)</p>
+          </div>
+          <div class="column has-text-centered">
+            <p class="highlight-num">0.791</p>
+            <p class="is-size-6 has-text-grey">SSIM</p>
+          </div>
+          <div class="column has-text-centered">
+            <p class="highlight-num">0.366</p>
+            <p class="is-size-6 has-text-grey">LPIPS</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr style="max-width:900px;margin:0 auto;" />
+
+<!-- ── Flythrough Results ───────────────────────────────────────────────────── -->
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Flythrough Results</h2>
+        <p class="is-size-6 has-text-grey" style="margin-bottom:2rem;">
+          DENSER ensemble renders across all 5 SoccerNet scenes. Each video spirals from
+          overhead down to ground level and back up.
+        </p>
+      </div>
+    </div>
+
+    <div class="scene-tabs">
+      <div class="tabs is-centered is-boxed is-medium">
+        <ul>
+          <li class="is-active"><a class="scene-tab" data-target="panel-s1">Scene 1</a></li>
+          <li><a class="scene-tab" data-target="panel-s2">Scene 2</a></li>
+          <li><a class="scene-tab" data-target="panel-s3">Scene 3</a></li>
+          <li><a class="scene-tab" data-target="panel-s4">Scene 4</a></li>
+          <li><a class="scene-tab" data-target="panel-s5">Scene 5</a></li>
+        </ul>
+      </div>
+      <div id="panel-s1" class="scene-panel is-active">
+        <video autoplay muted loop playsinline>
+          <source src="static/videos/scene1_loop.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div id="panel-s2" class="scene-panel">
+        <video muted loop playsinline>
+          <source src="static/videos/scene2_loop.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div id="panel-s3" class="scene-panel">
+        <video muted loop playsinline>
+          <source src="static/videos/scene3_loop.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div id="panel-s4" class="scene-panel">
+        <video muted loop playsinline>
+          <source src="static/videos/scene4_loop.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div id="panel-s5" class="scene-panel">
+        <video muted loop playsinline>
+          <source src="static/videos/scene5_loop.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr style="max-width:900px;margin:0 auto;" />
+
+<!-- ── Comparison Slider ────────────────────────────────────────────────────── -->
+<section class="section" id="comparison">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Method Comparison</h2>
+        <p class="is-size-6 has-text-grey" style="margin-bottom:1.25rem;">
+          Baseline (left) vs DENSER ours (right). Select a scene, camera, and baseline to compare. Drag the divider.
+        </p>
+
+        <!-- Scene selector -->
+        <div class="comp-scene-tabs" style="margin-bottom:0.75rem;">
+          <button class="comp-scene-tab" data-scene="s1">Scene 1</button>
+          <button class="comp-scene-tab" data-scene="s2">Scene 2</button>
+          <button class="comp-scene-tab active" data-scene="s3">Scene 3</button>
+          <button class="comp-scene-tab" data-scene="s4">Scene 4</button>
+          <button class="comp-scene-tab" data-scene="s5">Scene 5</button>
+        </div>
+
+        <!-- Camera selector -->
+        <div class="comp-cam-tabs" style="margin-bottom:0.75rem;">
+          <button class="comp-cam-tab" data-cam="00018">Cam 18</button>
+          <button class="comp-cam-tab" data-cam="00022">Cam 22</button>
+          <button class="comp-cam-tab" data-cam="00025">Cam 25</button>
+          <button class="comp-cam-tab active" data-cam="00033">Cam 33</button>
+          <button class="comp-cam-tab" data-cam="00038">Cam 38</button>
+        </div>
+
+        <!-- Method selector -->
+        <div class="comp-tabs">
+          <button class="comp-tab active" data-method="3dgs">3D Gaussian Splatting</button>
+          <button class="comp-tab" data-method="ts">Triangle Splat</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="comp-slider" class="comparison-wrap">
+      <div class="img-base">
+        <img id="comp-img-denser" src="static/images/comparison/s3/00033_denser.jpg" alt="DENSER" />
+      </div>
+      <div class="img-after">
+        <img id="comp-img-baseline" src="static/images/comparison/s3/00033_3dgs.jpg" alt="Baseline" />
+      </div>
+      <div class="comparison-divider"></div>
+      <div class="comparison-handle">&#8596;</div>
+      <span id="comp-label-left" class="comparison-label left">3DGS</span>
+      <span class="comparison-label right">DENSER (Ours)</span>
+    </div>
+
+  </div>
+</section>
+
+<hr style="max-width:900px;margin:0 auto;" />
+
+<!-- ── Quantitative ──────────────────────────────────────────────────────────── -->
+<section class="section" id="metrics">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Quantitative Comparison</h2>
+        <p class="is-size-6 has-text-grey" style="margin-bottom:2rem;">
+          Mean across all 5 challenge scenes on evaluation cameras.
+        </p>
+      </div>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <table class="table is-fullwidth is-striped is-hoverable has-text-centered">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3DGS <span class="tag is-light is-small">baseline</span></td>
+              <td>26.74</td><td>0.750</td><td>0.410</td>
+            </tr>
+            <tr>
+              <td>Triangle Splat <span class="tag is-light is-small">baseline</span></td>
+              <td>26.43</td><td>0.757</td><td>0.359</td>
+            </tr>
+            <tr style="border-top:2px solid #dbdbdb;">
+              <td style="text-align:left; padding-left:1.5rem; color:#888;">DENSER &mdash; Scene 1</td>
+              <td>30.016</td><td>0.7819</td><td>0.3976</td>
+            </tr>
+            <tr>
+              <td style="text-align:left; padding-left:1.5rem; color:#888;">DENSER &mdash; Scene 2</td>
+              <td>29.742</td><td>0.8028</td><td>0.3476</td>
+            </tr>
+            <tr>
+              <td style="text-align:left; padding-left:1.5rem; color:#888;">DENSER &mdash; Scene 3</td>
+              <td>29.821</td><td>0.7866</td><td>0.3359</td>
+            </tr>
+            <tr>
+              <td style="text-align:left; padding-left:1.5rem; color:#888;">DENSER &mdash; Scene 4</td>
+              <td>29.514</td><td>0.8095</td><td>0.3591</td>
+            </tr>
+            <tr>
+              <td style="text-align:left; padding-left:1.5rem; color:#888;">DENSER &mdash; Scene 5</td>
+              <td>30.334</td><td>0.7747</td><td>0.3878</td>
+            </tr>
+            <tr class="is-selected">
+              <td><strong>DENSER Mean (Ours) ★</strong></td>
+              <td><strong>29.885</strong></td>
+              <td><strong>0.7911</strong></td>
+              <td><strong>0.3656</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="has-text-grey is-size-7 has-text-centered" style="margin-top:0.5rem;">
+          Baseline numbers provided by challenge organisers. DENSER improves mean PSNR by
+          <strong>+3.15 dB</strong> over 3DGS and <strong>+3.46 dB</strong> over Triangle Splat.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr style="max-width:900px;margin:0 auto;" />
+
+<!-- ── BibTeX ────────────────────────────────────────────────────────────────── -->
+<section class="section" id="bibtex">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column"><h2 class="title is-3">BibTeX <span class="tag is-warning is-medium" style="vertical-align:middle;font-size:0.7rem;">Coming Soon</span></h2></div>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-10 has-text-centered">
+        <p class="has-text-grey is-size-6">Citation will be available upon publication.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ────────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      Page template based on <a href="https://nerfies.github.io" target="_blank">Nerfies</a>.
+    </p>
+  </div>
+</footer>
+
+<script src="static/js/main.js"></script>
+</body>
+</html>

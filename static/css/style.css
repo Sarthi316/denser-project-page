@@ -1,0 +1,114 @@
+body { font-family: 'Noto Sans', sans-serif; }
+.publication-title { font-family: 'Google Sans', sans-serif; }
+.publication-authors { font-family: 'Google Sans', sans-serif; }
+
+/* ── Pipeline / figure images ───────────────────────── */
+.pipeline-image { border-radius: 8px; border: 1px solid #dbdbdb; }
+
+/* ── Scene video tabs ────────────────────────────────── */
+.scene-panel { display: none; }
+.scene-panel.is-active { display: block; }
+.scene-panel video { width: 100%; border-radius: 8px; border: 1px solid #dbdbdb; }
+
+/* ── Comparison slider ───────────────────────────────── */
+.comparison-wrap {
+  position: relative;
+  width: 100%;
+  user-select: none;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #dbdbdb;
+  cursor: ew-resize;
+}
+.comparison-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+.comparison-wrap .img-after {
+  position: absolute;
+  top: 0; left: 0;
+  width: 50%;           /* clipped by JS */
+  overflow: hidden;
+}
+.comparison-wrap .img-after img {
+  width: auto;
+  max-width: none;      /* JS sets pixel width matching base */
+}
+.comparison-divider {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 3px;
+  background: #fff;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(0,0,0,0.4);
+}
+.comparison-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px; height: 40px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  pointer-events: none;
+  color: #555;
+}
+.comparison-label {
+  position: absolute;
+  top: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  pointer-events: none;
+}
+.comparison-label.left  { left:  12px; }
+.comparison-label.right { right: 12px; }
+
+/* Comparison selector tabs (shared base style) */
+.comp-tabs, .comp-scene-tabs, .comp-cam-tabs {
+  display: flex; gap: 8px; justify-content: center; margin-bottom: 0.75rem; flex-wrap: wrap;
+}
+.comp-tab, .comp-scene-tab, .comp-cam-tab {
+  padding: 5px 14px;
+  border-radius: 6px;
+  border: 1.5px solid #dbdbdb;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.comp-tab:hover, .comp-scene-tab:hover, .comp-cam-tab:hover { border-color: #3273dc; color: #3273dc; }
+.comp-tab.active, .comp-scene-tab.active, .comp-cam-tab.active {
+  background: #3273dc; border-color: #3273dc; color: #fff;
+}
+/* Scene tabs slightly muted colour to differentiate hierarchy */
+.comp-scene-tab.active { background: #485fc7; border-color: #485fc7; }
+.comp-cam-tab.active   { background: #3273dc; border-color: #3273dc; }
+
+/* ── Highlight numbers ───────────────────────────────── */
+.highlight-num { font-size: 2.5rem; font-weight: 800; color: #3273dc; line-height: 1; }
+
+/* ── BibTeX ──────────────────────────────────────────── */
+pre.bibtex {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 1.25em;
+  font-size: 0.85em;
+  overflow-x: auto;
+  text-align: left;
+}
+
+/* ── Footer ──────────────────────────────────────────── */
+.footer .icon-link { font-size: 1.25rem; color: #4a4a4a; }
+.footer .icon-link:hover { color: #000; }
